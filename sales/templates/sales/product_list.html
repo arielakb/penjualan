@@ -1,0 +1,39 @@
+{% extends "sales/base.html" %}
+{% block title %}Produk{% endblock %}
+{% block content %}
+<div class="topline">
+    <div>
+        <h1>Produk</h1>
+        <div class="sub">Harga dan stok dikelola melalui function PostgreSQL.</div>
+    </div>
+    <a class="btn" href="{% url 'product_create' %}">+ Tambah Produk</a>
+</div>
+
+<form class="search" method="get" style="margin-bottom:16px">
+    <input name="q" value="{{ keyword }}" placeholder="Cari nama produk">
+    <button class="btn secondary" type="submit">Cari</button>
+</form>
+
+<table>
+<thead><tr><th>ID</th><th>Produk</th><th>Harga</th><th>Stok</th><th>Aksi</th></tr></thead>
+<tbody>
+{% for row in products %}
+<tr>
+    <td>{{ row.product_id }}</td>
+    <td>{{ row.name }}</td>
+    <td>Rp {{ row.price|floatformat:0 }}</td>
+    <td>{{ row.stock }}</td>
+    <td class="actions">
+        <a class="btn secondary" href="{% url 'product_edit' row.product_id %}">Ubah</a>
+        <form class="inline" method="post" action="{% url 'product_delete' row.product_id %}" onsubmit="return confirm('Hapus produk ini?')">
+            {% csrf_token %}
+            <button class="btn danger" type="submit">Hapus</button>
+        </form>
+    </td>
+</tr>
+{% empty %}
+<tr><td colspan="5" class="empty">Data produk tidak ditemukan.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}

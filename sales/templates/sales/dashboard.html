@@ -1,0 +1,39 @@
+{% extends "sales/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="topline">
+    <div>
+        <h1>Dashboard</h1>
+        <div class="sub">Ringkasan aplikasi pengelolaan data penjualan.</div>
+    </div>
+    <a class="btn" href="{% url 'sale_create' %}">+ Transaksi Baru</a>
+</div>
+
+<div class="grid">
+    <div class="card"><div class="label">Pelanggan</div><div class="metric">{{ customer_count }}</div></div>
+    <div class="card"><div class="label">Produk</div><div class="metric">{{ product_count }}</div></div>
+    <div class="card"><div class="label">Transaksi</div><div class="metric">{{ sale_count }}</div></div>
+</div>
+
+<div class="section">
+    <h2>Transaksi Terbaru</h2>
+    <table>
+        <thead>
+            <tr><th>ID</th><th>Tanggal</th><th>Pelanggan</th><th>Total</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+        {% for row in latest_sales %}
+            <tr>
+                <td><a href="{% url 'sale_detail' row.sale_id %}">#{{ row.sale_id }}</a></td>
+                <td>{{ row.sale_date }}</td>
+                <td>{{ row.customer_name }}</td>
+                <td>Rp {{ row.total_amount|floatformat:0 }}</td>
+                <td><span class="status">{{ row.status }}</span></td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5" class="empty">Belum ada transaksi.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

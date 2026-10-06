@@ -1,0 +1,89 @@
+{% load static %}
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{% block title %}Penjualan{% endblock %}</title>
+    <style>
+        :root{
+            --ink:#17211b; --muted:#6c766f; --paper:#f5f6f1; --panel:#ffffff;
+            --line:#d9ded7; --accent:#1f6d49; --accent-dark:#145039; --danger:#a33a32;
+        }
+        *{box-sizing:border-box}
+        body{margin:0;background:var(--paper);color:var(--ink);font-family:Verdana,Geneva,sans-serif;font-size:14px}
+        h1,h2,h3{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.02em}
+        a{color:inherit}
+        .shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+        aside{background:#18231d;color:#edf3ef;padding:28px 18px;position:sticky;top:0;height:100vh}
+        .brand{font-family:Georgia,serif;font-size:24px;margin-bottom:28px}
+        .brand small{display:block;font-family:Verdana,sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#9fb1a5;margin-top:6px}
+        nav a{display:block;text-decoration:none;padding:11px 12px;border-radius:8px;margin:4px 0;color:#dbe6df}
+        nav a:hover{background:#26372d}
+        main{padding:34px;max-width:1400px;width:100%}
+        .topline{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:24px}
+        .topline h1{margin:0;font-size:34px}
+        .sub{color:var(--muted);margin-top:4px}
+        .btn{display:inline-block;border:0;border-radius:8px;padding:10px 14px;text-decoration:none;cursor:pointer;font-weight:700;background:var(--accent);color:white}
+        .btn:hover{background:var(--accent-dark)}
+        .btn.secondary{background:#e7ebe7;color:#243128}
+        .btn.danger{background:var(--danger)}
+        .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+        .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:0 8px 20px rgba(23,33,27,.04)}
+        .metric{font-family:Georgia,serif;font-size:38px;margin-top:8px}
+        .label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+        table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+        th,td{text-align:left;padding:12px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+        th{background:#eef1ec;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+        tr:last-child td{border-bottom:0}
+        .actions{display:flex;gap:7px;flex-wrap:wrap}
+        .actions .btn{padding:7px 9px;font-size:12px}
+        form.inline{display:inline}
+        .search{display:flex;gap:8px}
+        input,textarea,select{width:100%;border:1px solid #c8d0c9;border-radius:8px;padding:10px 11px;background:white;font:inherit}
+        label{font-weight:700;display:block;margin-bottom:6px}
+        .field{margin-bottom:15px}
+        .form-card{max-width:620px}
+        .message{padding:12px 14px;border-radius:8px;margin-bottom:16px;border:1px solid var(--line);background:white}
+        .message.success{border-color:#8fb79e;background:#edf7f0}
+        .message.error{border-color:#d7a19d;background:#fff0ef}
+        .status{display:inline-block;padding:4px 7px;border-radius:999px;background:#e8eee9;font-size:11px;font-weight:700}
+        .empty{padding:26px;text-align:center;color:var(--muted)}
+        .section{margin-top:28px}
+        .section h2{font-size:22px}
+        @media(max-width:850px){
+            .shell{grid-template-columns:1fr}
+            aside{position:static;height:auto}
+            nav{display:flex;gap:4px;flex-wrap:wrap}
+            main{padding:20px}
+            .grid{grid-template-columns:1fr}
+            .topline{align-items:flex-start;flex-direction:column}
+            table{display:block;overflow-x:auto}
+        }
+    </style>
+</head>
+<body>
+<div class="shell">
+    <aside>
+        <div class="brand">
+            Penjualan
+            <small>PostgreSQL + Django</small>
+        </div>
+        <nav>
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'customer_list' %}">Pelanggan</a>
+            <a href="{% url 'product_list' %}">Produk</a>
+            <a href="{% url 'sale_list' %}">Transaksi</a>
+            <a href="{% url 'report' %}">Laporan</a>
+        </nav>
+    </aside>
+
+    <main>
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </main>
+</div>
+</body>
+</html>

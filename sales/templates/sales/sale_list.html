@@ -1,0 +1,40 @@
+{% extends "sales/base.html" %}
+{% block title %}Transaksi{% endblock %}
+{% block content %}
+<div class="topline">
+    <div>
+        <h1>Transaksi</h1>
+        <div class="sub">Stok dan total dihitung di PostgreSQL.</div>
+    </div>
+    <a class="btn" href="{% url 'sale_create' %}">+ Transaksi Baru</a>
+</div>
+
+<table>
+<thead>
+<tr><th>ID</th><th>Tanggal</th><th>Pelanggan</th><th>Qty</th><th>Total</th><th>Status</th><th>Aksi</th></tr>
+</thead>
+<tbody>
+{% for row in sales %}
+<tr>
+    <td>#{{ row.sale_id }}</td>
+    <td>{{ row.sale_date }}</td>
+    <td>{{ row.customer_name }}</td>
+    <td>{{ row.total_quantity }}</td>
+    <td>Rp {{ row.total_amount|floatformat:0 }}</td>
+    <td><span class="status">{{ row.status }}</span></td>
+    <td class="actions">
+        <a class="btn secondary" href="{% url 'sale_detail' row.sale_id %}">Detail</a>
+        {% if row.status != "CANCELLED" %}
+        <form class="inline" method="post" action="{% url 'sale_cancel' row.sale_id %}" onsubmit="return confirm('Batalkan transaksi dan kembalikan stok?')">
+            {% csrf_token %}
+            <button class="btn danger" type="submit">Batalkan</button>
+        </form>
+        {% endif %}
+    </td>
+</tr>
+{% empty %}
+<tr><td colspan="7" class="empty">Belum ada transaksi.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}

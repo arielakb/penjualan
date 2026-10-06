@@ -1,0 +1,29 @@
+{% extends "sales/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="topline">
+    <div>
+        <h1>{{ title }}</h1>
+        <div class="sub">Data akan diproses melalui objek database PostgreSQL.</div>
+    </div>
+</div>
+
+<div class="card form-card">
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="field">
+            {{ field.label_tag }}
+            {{ field }}
+            {% for error in field.errors %}
+                <div style="color:#a33a32;margin-top:5px">{{ error }}</div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+    <div class="actions">
+        <button class="btn" type="submit">Simpan</button>
+        <a class="btn secondary" href="{{ back_url }}">Kembali</a>
+    </div>
+</form>
+</div>
+{% endblock %}

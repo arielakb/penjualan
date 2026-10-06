@@ -1,0 +1,68 @@
+{% extends "sales/base.html" %}
+{% block title %}Laporan{% endblock %}
+{% block content %}
+<div class="topline">
+    <div>
+        <h1>Laporan</h1>
+        <div class="sub">Menggunakan view dan function laporan PostgreSQL.</div>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom:20px">
+    <form method="get" class="search">
+        <div style="flex:1">
+            <label>Tanggal Awal</label>
+            <input type="date" name="start_date" value="{{ start_date }}">
+        </div>
+        <div style="flex:1">
+            <label>Tanggal Akhir</label>
+            <input type="date" name="end_date" value="{{ end_date }}">
+        </div>
+        <div style="align-self:end">
+            <button class="btn" type="submit">Tampilkan</button>
+        </div>
+    </form>
+</div>
+
+<div class="section">
+<h2>Laporan Penjualan</h2>
+<table>
+<thead><tr><th>ID</th><th>Tanggal</th><th>Pelanggan</th><th>Produk</th><th>Qty</th><th>Subtotal</th><th>Status</th></tr></thead>
+<tbody>
+{% for row in sales_rows %}
+<tr>
+    <td>#{{ row.sale_id }}</td>
+    <td>{{ row.sale_date }}</td>
+    <td>{{ row.customer_name }}</td>
+    <td>{{ row.product_name }}</td>
+    <td>{{ row.quantity }}</td>
+    <td>Rp {{ row.subtotal|floatformat:0 }}</td>
+    <td><span class="status">{{ row.status }}</span></td>
+</tr>
+{% empty %}
+<tr><td colspan="7" class="empty">Belum ada data laporan.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+<div class="section">
+<h2>Status Stok</h2>
+<table>
+<thead><tr><th>ID</th><th>Produk</th><th>Harga</th><th>Stok</th><th>Status</th></tr></thead>
+<tbody>
+{% for row in stock_rows %}
+<tr>
+    <td>{{ row.product_id }}</td>
+    <td>{{ row.product_name }}</td>
+    <td>Rp {{ row.price|floatformat:0 }}</td>
+    <td>{{ row.stock }}</td>
+    <td><span class="status">{{ row.stock_status }}</span></td>
+</tr>
+{% empty %}
+<tr><td colspan="5" class="empty">Tidak ada data produk.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}
